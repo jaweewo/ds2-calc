@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Almas - Dark Souls 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #2c2c2c;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #e67e22;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DS2 Calculadora de Almas</h1>
+        <label for="startLevel">Nivel actual:</label>
+        <input type="number" id="startLevel" min="1" max="200" value="89">
+
+        <label for="targetLevel">Nivel objetivo:</label>
+        <input type="number" id="targetLevel" min="1" max="200" value="115">
+
+        <button onclick="calculateSouls()">Calcular</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const soulTable = {
+            89: 11388, 90: 11751, 91: 12117, 92: 12486, 93: 12858, 94: 13233, 95: 13611, 
+            96: 13992, 97: 14376, 98: 14762, 99: 15151, 100: 15543, 101: 15938, 102: 16336,
+            103: 16736, 104: 17139, 105: 17545, 106: 17953, 107: 18364, 108: 18777, 109: 19193,
+            110: 19611, 111: 20032, 112: 20455, 113: 20881, 114: 21309, 115: 21740, 116: 22173,
+            117: 22608, 118: 23046, 119: 23486, 120: 23928, 121: 24373, 122: 24820, 123: 25269,
+            124: 25720, 125: 26174, 126: 26630, 127: 27088, 128: 27548, 129: 28010, 130: 28474,
+            131: 28940, 132: 29408, 133: 29878, 134: 30350, 135: 30824, 136: 31300, 137: 31778,
+            138: 32257, 139: 32738, 140: 33221, 141: 33706, 142: 34192, 143: 34680, 144: 35169,
+            145: 35660, 146: 36152, 147: 36646, 148: 37141, 149: 37637, 150: 38135, 151: 38634,
+            152: 39134, 153: 39635, 154: 40138, 155: 40641, 156: 41146, 157: 41652, 158: 42159,
+            159: 42667, 160: 43176, 161: 43686, 162: 44197, 163: 44709, 164: 45222, 165: 45736,
+            166: 46250, 167: 46766, 168: 47282, 169: 47799, 170: 48317, 171: 48835, 172: 49354,
+            173: 49874, 174: 50395, 175: 50916, 176: 51438, 177: 51961, 178: 52484, 179: 53008,
+            180: 53532, 181: 54057, 182: 54582, 183: 55108, 184: 55635, 185: 56162, 186: 56689,
+            187: 57217, 188: 57745, 189: 58274, 190: 58803, 191: 59332, 192: 59861, 193: 60391,
+            194: 60921, 195: 61451, 196: 61981, 197: 62512, 198: 63042, 199: 63573, 200: 64104
+        };
+
+        function calculateSouls() {
+            const start = parseInt(document.getElementById("startLevel").value);
+            const target = parseInt(document.getElementById("targetLevel").value);
+            let totalSouls = 0;
+
+            if (start >= target || start < 1 || target > 200) {
+                document.getElementById("result").innerText = "Introduce niveles válidos (1-200). El nivel objetivo debe ser mayor al actual.";
+                return;
+            }
+
+            for (let lvl = start; lvl < target; lvl++) {
+                if (soulTable[lvl]) {
+                    totalSouls += soulTable[lvl];
+                } else {
+                    // Por si faltan niveles, asumimos extrapolación simple (solo para robustez del código)
+                    totalSouls += Math.floor(1000 + (lvl * 400)); 
+                }
+            }
+
+            document.getElementById("result").innerText = `Necesitas aproximadamente ${totalSouls.toLocaleString()} almas.`;
+        }
+    </script>
+</body>
+</html>
